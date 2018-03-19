@@ -2,7 +2,6 @@ import cv2
 import sys
 from imutils import face_utils
 import imutils as imutils
-import numpy
 import dlib
 import numpy as np
 
@@ -22,7 +21,7 @@ import glob
 
 
 class FixedValues:
-    inputImage = cv2.imread("Pozytywne/b-20.jpg")
+    inputImage = cv2.imread("Pozytywne/1405JEMSmul-Fig3c.jpg")
 
 
 ####################################
