@@ -1,0 +1,299 @@
+Test : Sat Apr  7 12:28:13 2018
+scaleFactor: 1.5
+neighbours: 5
+scaleFactor: 1.5
+neighbours: 5
+Test : Sat Apr  7 12:29:46 2018
+<CascadeClassifier 00000026FAC36A50>
+scaleFactor: 1.5
+neighbours: 5
+<function lbpCascadeDetector at 0x000000268A887B70>
+scaleFactor: 1.5
+neighbours: 5
+Test : Sat Apr  7 12:31:40 2018
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+Test : Sat Apr  7 12:32:44 2018##################################################################### 
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+Test : Sat Apr  7 12:33:25 2018
+##################################################################### 
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+##################################################################### Test : Sat Apr  7 12:36:01 2018
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+##################################################################### 
+Test : Sat Apr  7 13:00:41 2018
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+##################################################################### 
+Test : Sat Apr  7 13:01:45 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+##################################################################### 
+Test : Sat Apr  7 13:33:44 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+lbpCascadeDetector
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+##################################################################### 
+Test : Sat Apr  7 13:34:59 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+
+##################################################################### 
+Test : Sat Apr  7 13:37:36 2018
+
+
+##################################################################### 
+Test : Sat Apr  7 13:37:52 2018
+
+
+##################################################################### 
+Test : Sat Apr  7 13:38:13 2018
+
+
+##################################################################### 
+Test : Sat Apr  7 13:38:37 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 13:38:59 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 13:54:10 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 13:57:33 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 13:58:08 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 13:58:38 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 14:44:21 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 14:48:30 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:24:44 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:25:43 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:25:55 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:26:15 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:26:25 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:28:18 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:45:56 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:46:22 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 15:47:12 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:28:12 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:28:24 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:28:31 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:29:50 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:31:25 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:39:24 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:40:06 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:41:05 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:44:36 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:46:00 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:46:25 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:47:33 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:47:57 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:48:11 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:49:19 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sat Apr  7 16:50:02 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 13:19:22 2018
+
+dlibFaceDetector
