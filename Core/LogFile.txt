@@ -297,3 +297,206 @@ dlibFaceDetector
 Test : Sun Apr  8 13:19:22 2018
 
 dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 14:42:39 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 15:04:38 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 15:06:41 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 15:38:14 2018
+
+
+##################################################################### 
+Test : Sun Apr  8 15:38:29 2018
+
+
+##################################################################### 
+Test : Sun Apr  8 15:39:00 2018
+
+
+##################################################################### 
+Test : Sun Apr  8 15:38:14 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 15:48:21 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 15:51:20 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 15:57:47 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 16:06:47 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 16:38:58 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 16:42:10 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 16:46:10 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 16:55:51 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 18:04:29 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 18:04:29 2018
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 18:07:51 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+
+##################################################################### 
+Test : Sun Apr  8 18:08:35 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+
+##################################################################### 
+Test : Sun Apr  8 18:09:36 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+
+##################################################################### 
+Test : Sun Apr  8 18:55:22 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+LBP Stats: 
+Good: 351
+Bad: 154
+HaarStats: Good: 349
+Bad: 156
+Dlib Stats: Good: 502
+Bad: 3
+
+##################################################################### 
+Test : Sun Apr  8 18:57:43 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+LBP Stats: 
+Good: 351
+Bad: 154
+HaarStats: Good: 349
+Bad: 156
+Dlib Stats: Good: 502
+Bad: 3
+
+##################################################################### 
+Test : Sun Apr  8 20:02:41 2018
+
+haarFaceCascade
+scaleFactor: 1.5
+neighbours: 5
+
+lbpCascadeDetector
+
+scaleFactor: 1.5
+neighbours: 5
+
+dlibFaceDetector
+LBP Stats: 
+Good: 351
+Bad: 154
+HaarStats: Good: 349
+Bad: 156
+Dlib Stats: Good: 502
+Bad: 3
+
+##################################################################### 
+Test : Sun Apr  8 23:15:10 2018
+
+deepLearningDetector
+
+##################################################################### 
+Test : Sun Apr  8 23:19:58 2018
+
+deepLearningDetector
+
+##################################################################### 
+Test : Sun Apr  8 23:26:00 2018
+
+deepLearningDetector
+LBP Stats: 
+Good: 0
+Bad: 0
+HaarStats: Good: 0
+Bad: 0
+Dlib Stats: Good: 0
+Bad: 0

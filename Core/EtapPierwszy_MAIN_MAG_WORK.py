@@ -10,16 +10,30 @@ import datetime
 # OPEN CV
 import os
 from imutils import face_utils
+import argparse
+
 from skimage import io
 
 ###STAŁE
 predictor_path = "landmark/shape_predictor_68_face_landmarks.dat"
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor(predictor_path)
+net = cv2.dnn.readNetFromCaffe("landmark/deploy.prototxt.txt", "landmark/res10_300x300_ssd_iter_140000.caffemodel")
+faceFolderPath = "Pozytywne/*"
+chinHeightROI = 0.23
+confidenceOfDetection = 0.5
+imageSizeToResize = 150
 ### ZMIENNE
 printDetails = True
+goodHaar = 0
+goodLbp = 0
+goodDlib = 0
+badHaar = 0
+badLbp = 0
+badDlib = 0
+goodDeepLearning = 0
+badDeepLearning = 0
 ###
-
 
 ### Sprawdzenie czy istnieje plik do logów
 getTime = str(datetime.datetime.now().ctime())
@@ -58,18 +72,21 @@ def haarCascadeFaceDetector(inputFilePath, scaleFactor, neighbours):
     inputFile = cv2.imread(inputFilePath)
     width, height = inputFile.shape[:2]
     print("width: " + str(width) + " height: " + str(height) + "\n")
-    inputFile = imutils.resize(inputFile, 500)
+    # inputFile = imutils.resize(inputFile, 500)
     grayImage = cv2.cvtColor(inputFile, cv2.COLOR_BGR2GRAY)
     detectedFace = haarFaceCascade.detectMultiScale(grayImage, scaleFactor, neighbours)
+    global badHaar, goodHaar
 
     if len(detectedFace) != 1:
         cv2.imwrite('WynikiAnalizy\\Haar Cascade\\Zle\\' + pathlib.Path(inputFilePath).name, inputFile)
         print(len(detectedFace))
+        badHaar += 1
     else:
+        goodHaar += 1
         for x, y, w, h in detectedFace:
             # Pokazanie że wykrywa twarz - można pominąć
-            # cv2.rectangle(inputFile, (x, y), (x + w, y + int(h+(h*0.2))), (255, 0, 0), 2)
-            smart_h = int(h * 0.23)
+            cv2.rectangle(inputFile, (x, y), (x + w, y + int(h + (h * 0.2))), (255, 0, 0), 2)
+            smart_h = int(h * chinHeightROI)
             if smart_h > height:
                 roi_color = inputFile[y:y + (height - 1), x:x + w]
             else:
@@ -77,7 +94,8 @@ def haarCascadeFaceDetector(inputFilePath, scaleFactor, neighbours):
 
             roi_gray = grayImage[y:y + h, x:x + w]
             # croppedImage = cv2.clone
-            cv2.imwrite('WynikiAnalizy\\Haar Cascade\\Dobre\\' + pathlib.Path(inputFilePath).name, roi_color)
+            # cv2.imwrite('WynikiAnalizy\\Haar Cascade\\Dobre\\' + pathlib.Path(inputFilePath).name, roi_color)
+            cv2.imwrite('WynikiAnalizy\\Haar Cascade\\Dobre\\' + pathlib.Path(inputFilePath).name, inputFile)
 
         # cv2.imshow("image",roi_color)
         # cv2.waitKey(0)
@@ -92,113 +110,157 @@ def haarCascadeFaceDetector(inputFilePath, scaleFactor, neighbours):
     # cv2.waitKey(0)
 
 
-def dlibFaceDetector(processedImage):
-    hSave = 'Core/Znaleziska algorytmów wyszukiwania/Haar Cascade'
+def lbpCascadeDetector(inputFilePath, scaleFactor, neighbours):
+    if printDetails:
+        file.writelines("lbpCascadeDetector" + "\n\n")
+        file.writelines("scaleFactor: " + str(scaleFactor) + "\nneighbours: " + str(neighbours) + "\n\n")
+    global goodLbp, badLbp
+    inputFile = cv2.imread(inputFilePath)
+    width, height = inputFile.shape[:2]
+    # inputFile = imutils.resize(inputFile, 500)
+    grayImage = cv2.cvtColor(inputFile, cv2.COLOR_BGR2GRAY)
+    detectedFace = lbpCascade.detectMultiScale(grayImage, scaleFactor, neighbours)
+
+    if len(detectedFace) != 1:
+        cv2.imwrite('WynikiAnalizy\\LBP\\Zle\\' + pathlib.Path(inputFilePath).name, inputFile)
+        badLbp += 1
+    else:
+        goodLbp += 1
+        for x, y, w, h in detectedFace:
+            smart_h = int(h * chinHeightROI)
+            if smart_h > height:
+                roi_color = inputFile[y:y + (height - 1), x:x + w]
+            else:
+                roi_color = inputFile[y:y + h + int(smart_h), x:x + w]
+            # Pokazanie że wykrywa twarz - można pominąć
+
+            cv2.rectangle(inputFile, (x, y), (x + w, y + int(h + (h * 0.2))), (255, 0, 0), 2)
+            roi_gray = grayImage[y:y + h, x:x + w]
+            # croppedImage = cv2.clone
+            # cv2.imwrite('WynikiAnalizy\\LBP\\Dobre\\' + pathlib.Path(inputFilePath).name, roi_color)
+            cv2.imwrite('WynikiAnalizy\\LBP\\Dobre\\' + pathlib.Path(inputFilePath).name, inputFile)
+
+        # cv2.imshow("image",roi_color)
+        # cv2.waitKey(0)
+
+    # if (detectedFace):
+    # cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+    # for (x,y,w,h) in detectedFace:
+    #     cv2.rectangle(dSave,(x,y),(x+w,y+h),(255,0,0),2)
+
+    #
+    # cv2.imshow("Image", inputFile)
+    # cv2.waitKey(0)
+
+
+def dlibFaceDetector(inputFilePath):
     if printDetails:
         file.writelines("dlibFaceDetector" + "\n")
-        # file.writelines("scaleFactor: " + str(scaleFactor) + "\nneighbours: " + str(neighbours) + "\n")
-
-    inputFile = cv2.imread(processedImage)
+    global badDlib, goodDlib
+    inputFile = cv2.imread(inputFilePath)
     # ( Width [0], Height [1]
     # inputFile = imutils.resize(inputFile, 500)
     grayImage = cv2.cvtColor(inputFile, cv2.COLOR_BGR2GRAY)
     width, height = inputFile.shape[:2]
     print("width: " + str(width) + " height: " + str(height) + "\n")
     rects = detector(grayImage, 1)
-
-    for (i, rect) in enumerate(rects):
-        # determine the facial landmarks for the face region, then
-        # convert the facial landmark (x, y)-coordinates to a NumPy
-        # array
-        shape = predictor(grayImage, rect)
-        shape = face_utils.shape_to_np(shape)
-
-        # convert dlib's rectangle to a OpenCV-style bounding box
-        # [i.e., (x, y, w, h)], then draw the face bounding box
-        (x, y, w, h) = face_utils.rect_to_bb(rect)
-        cv2.rectangle(inputFile, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-        # show the face number
-        # cv2.putText(inputFile, "Face #{}".format(i + 1), (x - 10, y - 10),
-        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
-        # loop over the (x, y)-coordinates for the facial landmarks
-        # and draw them on the image
-        # for (x, y) in shape:
-        #     cv2.circle(inputFile, (x, y), 1, (0, 0, 255), -1)
-
-        # show the output image with the face detections + facial landmarks
-        cv2.imshow("Output", inputFile)
-        cv2.waitKey(0)
-
-        # win = dlib.image_window()
-        #
-        # win.clear_overlay()
-        # win.set_image(inputFile)
-
-        # for (i, rect) in enumerate(rects):
-        # shape = predictor(grayImage, rect)
-        # shape = face_utils.shape_to_np(shape)
-        # (x, y, w, h) = face_utils.rect_to_bb(rect)
-        # cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-        # cv2.putText(image, "Face #{}".format(i + 1), (x - 10, y - 10),
-        #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        # cv2.imshow("image",inputFile)
-        # cv2.waitKey(0)
-
-        # win.add_overlay(rect)
-        # dlib.hit_enter_to_continue()
-
-        # dets = detector(inputFile, 1)
-        # for k, d in enumerate(dets):
-        #     print("Number of faces detected: {}".format(len(dets)))
-        #     print("Detection {}: Left: {} Top: {} Right: {} Bottom: {}".format(
-        #         k, d.left(), d.top(), d.right(), d.bottom()))
-        #     # Get the landmarks/parts for the face in box d.
-        #     shape = predictor(inputFile, d)
-        #     print("Part 0: {}, Part 1: {} ...".format(shape.part(0),
-        #                                               shape.part(1)))
-
-
-def lbpCascadeDetector(inputFilePath, scaleFactor, neighbours):
-    if printDetails:
-        file.writelines("lbpCascadeDetector" + "\n")
-        file.writelines("scaleFactor: " + str(scaleFactor) + "\nneighbours: " + str(neighbours) + "\n\n")
-    inputFile = cv2.imread(inputFilePath)
-    inputFile = imutils.resize(inputFile, 500)
-    grayImage = cv2.cvtColor(inputFile, cv2.COLOR_BGR2GRAY)
-    detectedFace = lbpCascade.detectMultiScale(grayImage, scaleFactor, neighbours)
-
-    if len(detectedFace) != 1:
-        cv2.imwrite('WynikiAnalizy\\LBP\\Zle\\' + pathlib.Path(inputFilePath).name, inputFile)
+    if len(rects) != 1:
+        cv2.imwrite('WynikiAnalizy\\Dlib\\Zle\\' + pathlib.Path(inputFilePath).name, inputFile)
+        badDlib += 1
     else:
-        for x, y, w, h in detectedFace:
-            smart_h = int(h * 0.23)
-            if smart_h > height:
-                roi_color = inputFile[y:y + (height - 1), x:x + w]
-            else:
-                roi_color = inputFile[y:y + h + int(smart_h), x:x + w]
+        goodDlib += 1
+        for (i, rect) in enumerate(rects):
+            # determine the facial landmarks for the face region, then
+            # convert the facial landmark (x, y)-coordinates to a NumPy
+            # array
+            shape = predictor(grayImage, rect)
+            shape = face_utils.shape_to_np(shape)
+
             # Pokazanie że wykrywa twarz - można pominąć
             # cv2.rectangle(inputFile, (x, y), (x + w, y + int(h+(h*0.2))), (255, 0, 0), 2)
-            roi_gray = grayImage[y:y + h, x:x + w]
+            # convert dlib's rectangle to a OpenCV-style bounding box
+            # [i.e., (x, y, w, h)], then draw the face bounding box
+
+            # udowodnienie że twarz wykrywa
+            (x, y, w, h) = face_utils.rect_to_bb(rect)
+            if x < 0:
+                x = 0
+            elif x > width:
+                x = width - 1
+
+            if (y < 0):
+                y = 0
+            elif y > height:
+                y = height - 1
+
+            if w < 0:
+                w = 0
+            elif w > width:
+                w = width - 1
+
+            if (h < 0):
+                h = 0
+            elif h > height:
+                h = height - 1
+
+            cv2.rectangle(inputFile, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+            smart_h = int(h * chinHeightROI)
+            roi_color = inputFile[y:y + h, x:x + w]
+            #
+            # if smart_h > h:
+            #     roi_color = inputFile[y:y + (height - 1), x:x + w]
+            # else:
+            #     roi_color = inputFile[y:y + h + int(smart_h), x:x + w]
+
+            roi_gray = grayImage[y:y + height, x:x + w]
             # croppedImage = cv2.clone
-            cv2.imwrite('WynikiAnalizy\\LBP\\Dobre\\' + pathlib.Path(inputFilePath).name, roi_color)
+            cv2.imwrite('WynikiAnalizy\\Dlib\\Dobre\\' + pathlib.Path(inputFilePath).name, inputFile)
+            # cv2.imshow("Output", roi_color)
+            # cv2.waitKey(0)
+            # show the face number
+            # cv2.putText(inputFile, "Face #{}".format(i + 1), (x - 10, y - 10),
+            #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        # cv2.imshow("image",roi_color)
-        # cv2.waitKey(0)
+            # loop over the (x, y)-coordinates for the facial landmarks
+            # and draw them on the image
+            # for (x, y) in shape:
+            #     cv2.circle(inputFile, (x, y), 1, (0, 0, 255), -1)
 
-    # if (detectedFace):
-    # cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
-    # for (x,y,w,h) in detectedFace:
-    #     cv2.rectangle(dSave,(x,y),(x+w,y+h),(255,0,0),2)
+            # show the output image with the face detections + facial landmarks
 
-    #
-    # cv2.imshow("Image", inputFile)
-    # cv2.waitKey(0)
+
+def deepLearningDetector(inputFilePath, globalConf, resizeSize):
+    if printDetails:
+        file.writelines("deepLearningDetector" + "\n")
+    global badDeepLearning, goodDeepLearning
+    inputFile = cv2.imread(inputFilePath)
+    (h, w) = inputFile.shape[:2]
+    # blob = cv2.dnn.blobFromImage(cv2.resize(inputFile, (300, 300)), 1.0,
+    #                              (300, 300), (104.0, 177.0, 123.0))
+    inputFile = imutils.resize(inputFile, resizeSize)
+    blob = cv2.dnn.blobFromImage(inputFile)
+    net.setInput(blob)
+    detections = net.forward()
+    for i in range(0, detections.shape[2]):
+
+        confidence = detections[0, 0, i, 2]
+        if confidence > globalConf:
+            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            (startX, startY, endX, endY) = box.astype("int")
+
+            text = "{:.2f}%".format(confidence * 100)
+            y = startY - 10 if startY - 10 > 10 else startY + 10
+            cv2.rectangle(inputFile, (startX, startY), (endX, endY),
+                          (0, 0, 255), 2)
+            cv2.putText(inputFile, text, (startX, y),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+            cv2.imshow("Output", inputFile)
+            cv2.waitKey(0)
+
 
 
 ### zmienne
-faceFolderPath = "Pozytywne/*"
 ###
 
 # czas = datetime.datetime.now().time()
@@ -218,14 +280,16 @@ removeAllResults()
 ###Głowna pętla
 counter = 0
 for image in lister:
+    print(image)
     counter += 1
+
     print("Iteracja: " + str(counter))
     # print(counter)
     # print(image)
     # haarCascadeFaceDetector(image, 1.5, 5)
     # lbpCascadeDetector(image, 1.5, 5)
-    dlibFaceDetector(image)
-
+    # dlibFaceDetector(image)
+    deepLearningDetector(image, confidenceOfDetection, imageSizeToResize)
     if printDetails:
         printDetails = False
 
@@ -234,5 +298,17 @@ for image in lister:
 # print(rstrip)
 # os.rename(image, "plik " + str(counter)+rstrip)
 
+file.writelines("LBP Stats: \n")
+file.writelines("Good: " + str(goodLbp) + '\n')
+file.writelines("Bad: " + str(badLbp) + '\n')
+file.writelines("HaarStats: ")
+file.writelines("Good: " + str(goodHaar) + '\n')
+file.writelines("Bad: " + str(badHaar) + '\n')
+file.writelines("Dlib Stats: ")
+file.writelines("Good: " + str(goodDlib) + '\n')
+file.writelines("Bad: " + str(badDlib) + '\n')
+file.writelines("Deep Learning Stats: ")
+file.writelines("Good: " + str(goodDlib) + '\n')
+file.writelines("Bad: " + str(badDlib) + '\n')
 
 file.close()
