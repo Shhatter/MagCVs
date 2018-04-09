@@ -25,6 +25,10 @@ confidenceOfDetection = 0.5
 imageSizeToResize = 150
 ### ZMIENNE
 printDetails = True
+
+goodResult = 0
+badResult = 0
+
 goodHaar = 0
 goodLbp = 0
 goodDlib = 0
@@ -48,21 +52,47 @@ else:
         "\n##################################################################### " + "\nTest : " + getTime + "\n\n")
 
 
-def removeAllResults():
-    shutil.rmtree('WynikiAnalizy\\Haar Cascade\\Zle\\')
-    os.mkdir('WynikiAnalizy\\Haar Cascade\\Zle\\')
-    shutil.rmtree('WynikiAnalizy\\Haar Cascade\\Dobre\\')
-    os.mkdir('WynikiAnalizy\\Haar Cascade\\Dobre\\')
+def removeAllResults(value):
+    if value == 0:
+        print("HaarCascade")
+        shutil.rmtree('WynikiAnalizy\\Haar Cascade\\Zle\\')
+        os.mkdir('WynikiAnalizy\\Haar Cascade\\Zle\\')
+        shutil.rmtree('WynikiAnalizy\\Haar Cascade\\Dobre\\')
+        os.mkdir('WynikiAnalizy\\Haar Cascade\\Dobre\\')
 
-    shutil.rmtree('WynikiAnalizy\\LBP\\Zle\\')
-    os.mkdir('WynikiAnalizy\\LBP\\Zle\\')
-    shutil.rmtree('WynikiAnalizy\\LBP\\Dobre\\')
-    os.mkdir('WynikiAnalizy\\LBP\\Dobre\\')
+    elif value == 1:
+        print("LBP")
+        shutil.rmtree('WynikiAnalizy\\LBP\\Zle\\')
+        os.mkdir('WynikiAnalizy\\LBP\\Zle\\')
+        shutil.rmtree('WynikiAnalizy\\LBP\\Dobre\\')
+        os.mkdir('WynikiAnalizy\\LBP\\Dobre\\')
+    elif value == 2:
+        print("Histogram of Oriented Gradients")
+        shutil.rmtree('WynikiAnalizy\\Dlib\\Zle\\')
+        os.mkdir('WynikiAnalizy\\Dlib\\Zle\\')
+        shutil.rmtree('WynikiAnalizy\\Dlib\\Dobre\\')
+        os.mkdir('WynikiAnalizy\\Dlib\\Dobre\\')
+    elif value == 3:
+        print("Single Shot Detector ")
+    elif value == 4:
+        print("FaceNet")
+    elif value == 10:
+        print("CLEAR ALL FOLDERS !")
+        shutil.rmtree('WynikiAnalizy\\Haar Cascade\\Zle\\')
+        os.mkdir('WynikiAnalizy\\Haar Cascade\\Zle\\')
+        shutil.rmtree('WynikiAnalizy\\Haar Cascade\\Dobre\\')
+        os.mkdir('WynikiAnalizy\\Haar Cascade\\Dobre\\')
 
-    shutil.rmtree('WynikiAnalizy\\Dlib\\Zle\\')
-    os.mkdir('WynikiAnalizy\\Dlib\\Zle\\')
-    shutil.rmtree('WynikiAnalizy\\Dlib\\Dobre\\')
-    os.mkdir('WynikiAnalizy\\Dlib\\Dobre\\')
+        shutil.rmtree('WynikiAnalizy\\LBP\\Zle\\')
+        os.mkdir('WynikiAnalizy\\LBP\\Zle\\')
+        shutil.rmtree('WynikiAnalizy\\LBP\\Dobre\\')
+        os.mkdir('WynikiAnalizy\\LBP\\Dobre\\')
+
+        print("Histogram of Oriented Gradients")
+        shutil.rmtree('WynikiAnalizy\\Dlib\\Zle\\')
+        os.mkdir('WynikiAnalizy\\Dlib\\Zle\\')
+        shutil.rmtree('WynikiAnalizy\\Dlib\\Dobre\\')
+        os.mkdir('WynikiAnalizy\\Dlib\\Dobre\\')
 
 
 def haarCascadeFaceDetector(inputFilePath, scaleFactor, neighbours):
@@ -75,14 +105,14 @@ def haarCascadeFaceDetector(inputFilePath, scaleFactor, neighbours):
     # inputFile = imutils.resize(inputFile, 500)
     grayImage = cv2.cvtColor(inputFile, cv2.COLOR_BGR2GRAY)
     detectedFace = haarFaceCascade.detectMultiScale(grayImage, scaleFactor, neighbours)
-    global badHaar, goodHaar
+    global goodResult, badResult
 
     if len(detectedFace) != 1:
         cv2.imwrite('WynikiAnalizy\\Haar Cascade\\Zle\\' + pathlib.Path(inputFilePath).name, inputFile)
         print(len(detectedFace))
-        badHaar += 1
+        badResult += 1
     else:
-        goodHaar += 1
+        goodResult += 1
         for x, y, w, h in detectedFace:
             # Pokazanie że wykrywa twarz - można pominąć
             cv2.rectangle(inputFile, (x, y), (x + w, y + int(h + (h * 0.2))), (255, 0, 0), 2)
@@ -114,7 +144,7 @@ def lbpCascadeDetector(inputFilePath, scaleFactor, neighbours):
     if printDetails:
         file.writelines("lbpCascadeDetector" + "\n\n")
         file.writelines("scaleFactor: " + str(scaleFactor) + "\nneighbours: " + str(neighbours) + "\n\n")
-    global goodLbp, badLbp
+    global goodResult, badResult
     inputFile = cv2.imread(inputFilePath)
     width, height = inputFile.shape[:2]
     # inputFile = imutils.resize(inputFile, 500)
@@ -123,9 +153,9 @@ def lbpCascadeDetector(inputFilePath, scaleFactor, neighbours):
 
     if len(detectedFace) != 1:
         cv2.imwrite('WynikiAnalizy\\LBP\\Zle\\' + pathlib.Path(inputFilePath).name, inputFile)
-        badLbp += 1
+        badResult += 1
     else:
-        goodLbp += 1
+        goodResult += 1
         for x, y, w, h in detectedFace:
             smart_h = int(h * chinHeightROI)
             if smart_h > height:
@@ -255,9 +285,8 @@ def deepLearningDetector(inputFilePath, globalConf, resizeSize):
                           (0, 0, 255), 2)
             cv2.putText(inputFile, text, (startX, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
-            cv2.imshow("Output", inputFile)
-            cv2.waitKey(0)
-
+            # cv2.imshow("Output", inputFile)
+            # cv2.waitKey(0)
 
 
 ### zmienne
@@ -270,45 +299,111 @@ lister = glob.glob(faceFolderPath)
 haarFaceCascade = cv2.CascadeClassifier('HaarCascadeConfigs/haarcascade_frontalface_default.xml')
 lbpCascade = cv2.CascadeClassifier('HaarCascadeConfigs/lbpcascade_frontalface_improved.xml')
 
+
 ### Czyszczenie folderów wynikowych
-removeAllResults()
+# removeAllResults()
+
+
 ###
 
 
 ###
+
+def researchModeExecutor(startOption, clear, value):
+    global printDetails
+    global goodResult, badResult
+
+    if startOption == 0:
+        print("HaarCascade")
+        removeAllResults(0)
+        counter = 0
+        for image in lister:
+            print(image)
+            print("Iteracja: " + str(counter))
+            counter += 1
+            haarCascadeFaceDetector(image, value[0], value[1])
+            # lbpCascadeDetector(image, 1.5, 5)
+            # dlibFaceDetector(image)
+            # deepLearningDetector(image, confidenceOfDetection, imageSizeToResize)
+            if printDetails:
+                printDetails = False
+        printDetails = True
+        file.writelines("HaarStats:\t")
+        file.writelines("Good:\t" + str(goodResult) + '\t')
+        file.writelines("Bad:\t" + str(badResult) + '\n')
+        goodResult = 0
+        badResult = 0
+
+    elif startOption == 1:
+        print("LBP")
+        removeAllResults(1)
+        counter = 0
+        for image in lister:
+            print(image)
+            print("Iteracja: " + str(counter))
+            counter += 1
+            lbpCascadeDetector(image, value[0], value[1])
+            # lbpCascadeDetector(image, 1.5, 5)
+            # dlibFaceDetector(image)
+            # deepLearningDetector(image, confidenceOfDetection, imageSizeToResize)
+            if printDetails:
+                printDetails = False
+        printDetails = True
+        file.writelines("LBP Stats:\t")
+        file.writelines("Good:\t" + str(goodResult) + '\t')
+        file.writelines("Bad:\t" + str(badResult) + '\n')
+        goodResult = 0
+        badResult = 0
+    elif startOption == 2:
+        print("Histogram of Oriented Gradients")
+    elif startOption == 3:
+        print("Single Shot Detector ")
+    elif startOption == 4:
+        print("FaceNet")
+
 
 ###Głowna pętla
-counter = 0
-for image in lister:
-    print(image)
-    counter += 1
+# counter = 0
+# for image in lister:
+#     # print(image)
+#     # counter += 1
+#
+#     print("Iteracja: " + str(counter))
+#     # print(counter)
+#     # print(image)
+#     haarCascadeFaceDetector(image, 1.5, 5)
+#     lbpCascadeDetector(image, 1.5, 5)
+#     dlibFaceDetector(image)
+#     deepLearningDetector(image, confidenceOfDetection, imageSizeToResize)
+#     if printDetails:
+#         printDetails = False
 
-    print("Iteracja: " + str(counter))
-    # print(counter)
-    # print(image)
-    # haarCascadeFaceDetector(image, 1.5, 5)
-    # lbpCascadeDetector(image, 1.5, 5)
-    # dlibFaceDetector(image)
-    deepLearningDetector(image, confidenceOfDetection, imageSizeToResize)
-    if printDetails:
-        printDetails = False
 
 # Zmiana nazewnictwa plików bez zmiany rozszerzenia
 # rstrip = pathlib.Path(image).suffix
 # print(rstrip)
 # os.rename(image, "plik " + str(counter)+rstrip)
 
-file.writelines("LBP Stats: \n")
-file.writelines("Good: " + str(goodLbp) + '\n')
-file.writelines("Bad: " + str(badLbp) + '\n')
-file.writelines("HaarStats: ")
-file.writelines("Good: " + str(goodHaar) + '\n')
-file.writelines("Bad: " + str(badHaar) + '\n')
-file.writelines("Dlib Stats: ")
-file.writelines("Good: " + str(goodDlib) + '\n')
-file.writelines("Bad: " + str(badDlib) + '\n')
-file.writelines("Deep Learning Stats: ")
-file.writelines("Good: " + str(goodDlib) + '\n')
-file.writelines("Bad: " + str(badDlib) + '\n')
+
+# researchModeExecutor(0, 1, [2, 3])
+# researchModeExecutor(0, 1, [4, 2])
+# researchModeExecutor(0, 1, [1.5, 5])
+
+researchModeExecutor(1, 1, [4, 2])
+researchModeExecutor(1, 1, [2, 3])
+researchModeExecutor(1, 1, [1.5, 5])
+
+# file.writelines("LBP Stats: \t")
+# file.writelines("Good:\t" + str(goodLbp) + '\t')
+# file.writelines("Bad:\t" + str(badLbp) + '\n')
+# file.writelines("HaarStats:\t")
+# file.writelines("Good:\t" + str(goodHaar) + '\t')
+# file.writelines("Bad:\t" + str(badHaar) + '\n')
+# file.writelines("Dlib Stats:\t")
+# file.writelines("Good:\t" + str(goodDlib) + '\t')
+# file.writelines("Bad:\t" + str(badDlib) + '\n')
+# file.writelines("Deep Learning Stats:\t")
+# file.writelines("Good:\t" + str(goodDlib) + '\t')
+# file.writelines("Bad:\t" + str(badDlib) + '\n')
 
 file.close()
